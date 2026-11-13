@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy"
+  content="default-src 'none'; script-src 'self' file:; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data:; font-src 'self' file:; form-action 'none'; base-uri 'none'">
+<title>欧氏波方程的局部光滑 — 可视化论文</title>
+<meta name="description" content="论文《Local smoothing for the Euclidean wave equation》的交互式可视化伴侣：证明依赖图、陈述、分步推导、记号与原文图解。">
+<link rel="stylesheet" href="assets/vendor/katex.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip-link" href="#panel">跳到阅读面板</a>
+
+<header class="topbar">
+  <button type="button" class="topbar__brand" id="brand-home" aria-label="显示欢迎面板">
+    <span class="topbar__mark" aria-hidden="true">◇</span>
+    <span class="topbar__titles">
+      <span class="topbar__kicker">可视化论文</span>
+      <span class="topbar__title">欧氏波方程的局部光滑</span>
+    </span>
+  </button>
+
+  <div class="topbar__search">
+    <label class="sr-only" for="search-input">搜索标题、编号</label>
+    <input id="search-input" type="text" placeholder="搜索 “Bochner”、定理 1.2、9.1 …" autocomplete="off">
+    <div id="search-results" class="search-results" hidden></div>
+  </div>
+
+  <div class="topbar__actions">
+    <div class="reading-size" role="group" aria-label="字号">
+      <button type="button" class="reading-btn" id="text-smaller" title="缩小字号">A−</button>
+      <button type="button" class="reading-btn" id="text-reset" title="重置字号">A</button>
+      <button type="button" class="reading-btn" id="text-larger" title="放大字号">A+</button>
+    </div>
+    <button type="button" class="reading-btn" id="notation-btn" title="记号与符号">记号</button>
+    <button type="button" class="reading-btn" id="figures-btn" title="机制图">机制图</button>
+    <a class="reading-btn paper-link" href="paper.pdf">原文 PDF</a>
+    <button type="button" class="reading-btn reading-graph-toggle" id="toggle-graph" aria-pressed="false" title="隐藏依赖图（g）">隐藏图</button>
+    <button type="button" class="icon-button" id="theme-toggle" title="切换浅色 / 深色" aria-label="切换主题">
+      <span aria-hidden="true">◐</span>
+    </button>
+  </div>
+</header>
+
+<nav class="tabbar" aria-label="面板切换">
+  <button type="button" class="tabbar__btn is-active" data-pane="graph">图</button>
+  <button type="button" class="tabbar__btn" data-pane="panel">阅读面板</button>
+</nav>
+
+<main class="layout">
+
+  <section id="graph-pane" class="pane pane--graph" aria-label="依赖图">
+    <div id="cy" tabindex="0" aria-label="依赖图：+ − 缩放，0 适应屏幕。"></div>
+    <div id="outline" hidden></div>
+
+    <div class="graph-toolbar" role="toolbar" aria-label="图操作">
+      <button type="button" class="graph-btn graph-btn--history" id="history-back" title="后退（Alt+←）">← 后退</button>
+      <button type="button" class="graph-btn graph-btn--history" id="history-forward" title="前进（Alt+→）">前进 →</button>
+      <button type="button" class="graph-btn" id="outline-toggle" aria-pressed="false">目录</button>
+      <button type="button" class="graph-btn graph-btn--map" id="whole-map" title="回到分区与主定理总图">总图</button>
+      <div class="graph-tiers" role="group" aria-label="显示范围">
+        <button type="button" class="graph-btn" id="view-essentials" aria-pressed="false">主要结果</button>
+        <button type="button" class="graph-btn" id="view-everything" aria-pressed="false">完整图</button>
+      </div>
+      <div class="graph-hops" role="group" aria-label="跟随链接的距离">
+        <button type="button" class="graph-btn" id="hops-1" aria-pressed="true">直接链接</button>
+        <button type="button" class="graph-btn" id="hops-2" aria-pressed="false">再远一步</button>
+      </div>
+    </div>
+
+    <div class="graph-zoom" role="toolbar" aria-label="缩放" aria-orientation="vertical">
+      <button type="button" class="graph-btn graph-btn--icon" id="zoom-in" title="放大（+）">+</button>
+      <button type="button" class="graph-btn graph-btn--icon" id="zoom-out" title="缩小（−）">−</button>
+      <button type="button" class="graph-btn graph-btn--icon" id="zoom-fit" title="适应屏幕（0）">
+        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 0.8v2.4M8 12.8v2.4M0.8 8h2.4M12.8 8h2.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <button type="button" class="graph-btn graph-btn--icon" id="zoom-selection" title="缩放到所选">
+        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="1.8" fill="currentColor"/></svg>
+      </button>
+    </div>
+
+    <div class="graph-legend">
+      <button type="button" class="graph-legend__head" id="legend-toggle" aria-expanded="false">
+        <i class="graph-legend__chevron" aria-hidden="true"></i>图例
+      </button>
+      <div class="graph-legend__body" id="legend-body" hidden>
+        <div class="graph-legend__row">
+          <span><i class="legend-swatch legend-swatch--theorem"></i>定理</span>
+          <span><i class="legend-swatch legend-swatch--proposition"></i>命题</span>
+        </div>
+        <div class="graph-legend__row">
+          <span><i class="legend-swatch legend-swatch--lemma"></i>引理</span>
+          <span><i class="legend-swatch legend-swatch--corollary"></i>推论</span>
+        </div>
+        <div class="graph-legend__row">
+          <span><i class="legend-swatch legend-swatch--appendix"></i>附录结果</span>
+          <span><i class="legend-swatch legend-swatch--section"></i>分区</span>
+        </div>
+        <div class="graph-legend__row">
+          <span class="graph-legend__key"><i class="legend-arrow"></i>A → B：A 被用于证明 B</span>
+        </div>
+        <div class="graph-legend__row">
+          <span class="graph-legend__key"><i class="legend-arrow legend-arrow--hl"></i>所选或悬停框的箭头</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pane-divider" id="divider" role="separator" tabindex="0" aria-orientation="vertical"
+    aria-label="调整阅读面板宽度（方向键；双击重置）" aria-valuemin="25" aria-valuemax="75" aria-valuenow="42"></div>
+
+  <section id="panel" class="pane pane--panel" aria-label="阅读面板" tabindex="-1">
+    <div id="panel-content" class="panel-content"></div>
+  </section>
+</main>
+
+<dialog id="notation-modal" class="modal" aria-label="记号与符号">
+  <div class="modal__head">
+    <h2>记号与符号</h2>
+    <button type="button" class="icon-button modal__close" id="notation-close" aria-label="关闭">×</button>
+  </div>
+  <div id="notation-body" class="modal__body"></div>
+</dialog>
+
+<dialog id="figure-modal" class="modal modal--wide" aria-label="机制图">
+  <div class="modal__head">
+    <h2>关键机制图</h2>
+    <button type="button" class="icon-button modal__close" id="figure-close" aria-label="关闭">×</button>
+  </div>
+  <div id="figure-body" class="modal__body"></div>
+</dialog>
+
+<script src="assets/vendor/cytoscape.min.js"></script>
+<script src="assets/vendor/cytoscape-dagre.min.js"></script>
+<script src="assets/vendor/katex.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
