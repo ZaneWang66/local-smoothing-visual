@@ -314,12 +314,33 @@
       cy.elements().remove();
       cy.add(graphElements());
     });
-    cy.layout({
-      name:"dagre", rankDir:mode === "map" ? "TB" : "LR",
-      nodeSep:32, rankSep:mode === "map" ? 36 : 52, fit:false, animate:false
-    }).run();
+    layoutGraph();
     highlight(selected);
     fitGraph();
+  }
+
+  function layoutGraph() {
+    const options = {
+      name:"dagre", rankDir:mode === "map" ? "TB" : "LR",
+      nodeSep:32, rankSep:mode === "map" ? 36 : 52, fit:false, animate:false
+    };
+    if (mode !== "all") {
+      cy.layout(options).run();
+      return;
+    }
+
+    const [main, ...independent] = cy.elements().components()
+      .sort((a, b) => b.nodes().length - a.nodes().length);
+    main.layout(options).run();
+    const mainBox = main.boundingBox();
+    const gap = 144;
+    let left = mainBox.x1;
+    for (const component of independent) {
+      component.layout(options).run();
+      const box = component.boundingBox();
+      component.nodes().shift("x", left - box.x1).shift("y", mainBox.y2 + gap - box.y1);
+      left += box.w + gap;
+    }
   }
 
   function pane(name) {
