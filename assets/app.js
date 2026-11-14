@@ -41,8 +41,19 @@
     const cur = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", cur);
     try { localStorage.setItem("vp-theme", cur); } catch (e) {}
+    updatePrerequisitesLink();
     colorGraph();
   });
+
+  function updatePrerequisitesLink() {
+    const query = new URLSearchParams();
+    const id = location.hash.slice(2);
+    if (id) query.set("from", id);
+    const theme = root.getAttribute("data-theme");
+    if (theme) query.set("theme", theme);
+    const search = query.toString();
+    document.getElementById("prerequisites-link").href = "prerequisites.html" + (search ? "?" + search : "");
+  }
 
   /* ---------------- 富文本 → KaTeX ---------------- */
   function renderKatex(container, tex, display) {
@@ -346,6 +357,7 @@
     }
     const hash = id ? "#/" + id : "#/";
     if (location.hash !== hash) history.replaceState(null,"",hash);
+    updatePrerequisitesLink();
     back.disabled = cursor === 0;
     forward.disabled = cursor === trail.length-1;
     panelContent.scrollTop = 0;
