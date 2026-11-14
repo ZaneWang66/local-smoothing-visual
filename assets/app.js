@@ -452,12 +452,28 @@
         esc(resultById[i].number) + "</span>" + esc(resultById[i].title) + "</a>").join("") + "</nav>";
   }
 
+  function prerequisiteMarkup(cards) {
+    return '<h3 class="section-label">证明所需基础</h3>' + cards.map(card => {
+      const [direction, title, , page, references = []] = card;
+      return '<details class="step prerequisite" data-direction="' + esc(direction) + '">' +
+        '<summary class="step__head">' + esc(title) + '</summary>' +
+        '<div class="step__body"><div class="prose prerequisite__explanation"></div>' +
+        '<div class="source-links prerequisite__sources">' +
+        '<a href="' + pageLink(page) + '">原论文第 ' + page + ' 页</a>' +
+        references.map(number => {
+          const [author, referencePage] = VP_PREREQUISITES.references[number];
+          return '<a href="' + pageLink(referencePage) + '">文献 [' + number + '] ' + esc(author) + '</a>';
+        }).join("") + '</div></div></details>';
+    }).join("");
+  }
+
   function renderResult(id) {
     const r = resultById[id];
     const host = document.createElement("div");
+    const prerequisites = VP_PREREQUISITES.byResult[id];
 
     const stepsHtml = (r.steps || []).map((s, i) =>
-      '<details class="step"' + (i === 0 ? " open" : "") + '>' +
+      '<details class="step proof-step"' + (i === 0 ? " open" : "") + '>' +
         '<summary class="step__head"><span class="step__num">步骤 ' + (i + 1) + "</span><span></span></summary>" +
         '<div class="step__body"></div></details>').join("");
 
@@ -467,6 +483,7 @@
         '<a class="badge src" href="#/' + r.parent + '">§ ' + esc(sectionById[r.parent].number) + '</a></div>' +
         '<h2 class="node-head__title"><span class="mono">' + esc(r.number) + "</span> " + esc(r.title) + "</h2></div>" +
       directionSummary(r) +
+      prerequisiteMarkup(prerequisites) +
       '<div class="section-label">陈述</div><div class="prose statement"></div>' +
       '<div class="section-label">证明思路</div><div class="prose idea"></div>' +
       ((r.steps && r.steps.length) ? '<div class="section-label">分步推导</div>' + stepsHtml : "") +
@@ -476,6 +493,9 @@
       '<div class="section-label">原文</div><nav class="source-links">' +
       r.pages.map(page => '<a href="' + pageLink(page) + '">第 ' + page + ' 页</a>').join("") + '</nav>';
 
+    host.querySelectorAll(".prerequisite__explanation").forEach((element, index) => {
+      rich(element, prerequisites[index][2]);
+    });
     rich(host.querySelector(".statement"), r.statement);
     const idea = host.querySelector(".idea");
     r.idea.forEach(text => {
@@ -485,8 +505,8 @@
     });
 
     // 步骤内容与标题
-    (r.steps || []).forEach((s, i) => {
-      const stepEl = host.querySelectorAll(".step")[i];
+    host.querySelectorAll(".proof-step").forEach((stepEl, i) => {
+      const s = r.steps[i];
       const headSpan = stepEl.querySelector(".step__head").querySelectorAll("span")[1];
       rich(headSpan, s.t);
       rich(stepEl.querySelector(".step__body"), s.b);

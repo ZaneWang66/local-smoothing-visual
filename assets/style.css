@@ -296,6 +296,10 @@ body {
 .step__body { padding: 12px 16px; color: var(--text-dim); font-family: var(--font-read); display: none; }
 .step[open] .step__body { display: block; }
 .step[open] .step__head { border-bottom: 1px solid var(--border); }
+.prerequisite { border-color: var(--direction-line); }
+.prerequisite > .step__head { background: var(--direction-tint); color: var(--direction-color); }
+.prerequisite[open] > .step__head { border-color: var(--direction-line); }
+.prerequisite__sources { margin-top: 10px; }
 
 /* ---------------- 弹窗 ---------------- */
 .modal {
