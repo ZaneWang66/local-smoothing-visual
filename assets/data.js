@@ -1,4 +1,5 @@
-/* 中文转述依据随附的 59 页 PDF。依赖箭头从前提指向使用它的结果。 */
+/* 中文转述依据随附的 59 页 PDF。依赖箭头从前提指向使用它的结果。
+   directions 是对当前证明所用方法的人工占比估计。直接引用只记录为依赖，不继承其证明方向。 */
 const VP = {
   "meta": {
     "title": "欧氏波方程的局部光滑",
@@ -12,97 +13,164 @@ const VP = {
     "abstract": "论文从一个临界频率环带估计出发，得到欧氏波方程的局部光滑。四元数行列式决定临界指数，两次圆环比较决定对数损失。球面延拓与薄壳乘子估计把结果分别传到 Kakeya 几何和 Bochner–Riesz 求和。",
     "rule": "各节点用中文转述原文并链接对应 PDF 页。关键假设、指数与依赖已经复核。Lean 的覆盖范围见文末链接。"
   },
+  "directions": {
+    "harmonic": "调和分析",
+    "hyperbolic": "双曲偏微分方程与复时空",
+    "quaternionic": "四元数线性代数",
+    "elliptic": "椭圆偏微分方程",
+    "variational": "几何分析与变分方法",
+    "potential": "位势理论",
+    "probability": "概率（随机化）",
+    "geometric": "几何测度论与 Kakeya 几何"
+  },
   "sections": [
     {
       "id": "s1",
       "number": "1",
       "title": "引言与主要结果",
       "page": 1,
-      "short": "引言"
+      "short": "引言",
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "s2",
       "number": "2",
       "title": "波叠加的守恒流",
       "page": 6,
-      "short": "守恒流"
+      "short": "守恒流",
+      "directions": {
+        "hyperbolic": 65,
+        "quaternionic": 25,
+        "harmonic": 10
+      }
     },
     {
       "id": "s3",
       "number": "3",
       "title": "行列式与分部积分",
       "page": 10,
-      "short": "行列式与余因子"
+      "short": "行列式与余因子",
+      "directions": {
+        "quaternionic": 100
+      }
     },
     {
       "id": "s4",
       "number": "4",
       "title": "行列式能量与边界通量",
       "page": 14,
-      "short": "能量与通量"
+      "short": "能量与通量",
+      "directions": {
+        "quaternionic": 60,
+        "variational": 30,
+        "harmonic": 10
+      }
     },
     {
       "id": "s5",
       "number": "5",
       "title": "固定纤维上的能量",
       "page": 18,
-      "short": "纤维估计"
+      "short": "纤维估计",
+      "directions": {
+        "harmonic": 50,
+        "elliptic": 35,
+        "quaternionic": 15
+      }
     },
     {
       "id": "s6",
       "number": "6",
       "title": "薄柱体上的传播",
       "page": 21,
-      "short": "圆环传播"
+      "short": "圆环传播",
+      "note": "圆环的径向调和函数也有概率解释。若内圈取值 1、外圈取值 0，函数值等于平面布朗运动从该点出发先碰到内圈的概率。引理 6.1 的证明使用最大值原理和平均值不等式。",
+      "directions": {
+        "potential": 85,
+        "harmonic": 15
+      }
     },
     {
       "id": "s7",
       "number": "7",
       "title": "回到欧氏空间与 Sobolev 估计",
       "page": 24,
-      "short": "去周期化"
+      "short": "去周期化",
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "s8",
       "number": "8",
       "title": "两个尖锐性障碍",
       "page": 26,
-      "short": "端点障碍"
+      "short": "端点障碍",
+      "directions": {
+        "harmonic": 70,
+        "geometric": 25,
+        "probability": 5
+      }
     },
     {
       "id": "s9",
       "number": "9",
       "title": "球面延拓与 Kakeya",
       "page": 27,
-      "short": "球面延拓与 Kakeya"
+      "short": "球面延拓与 Kakeya",
+      "note": "第 9.2 节证明引理 9.4 时，用独立随机符号把球冠延拓估计转成管重叠估计。推论 9.1 直接使用引理 9.4 的结论。",
+      "directions": {
+        "geometric": 50,
+        "harmonic": 45,
+        "probability": 5
+      }
     },
     {
       "id": "s10",
       "number": "10",
       "title": "Bochner–Riesz 平均",
       "page": 32,
-      "short": "Bochner–Riesz"
+      "short": "Bochner–Riesz",
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "s11",
       "number": "11",
       "title": "Stein 平方函数",
       "page": 33,
-      "short": "Stein 平方函数"
+      "short": "Stein 平方函数",
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "s12",
       "number": "12",
       "title": "抛物面与 Schrödinger",
       "page": 36,
-      "short": "抛物面与 Schrödinger"
+      "short": "抛物面与 Schrödinger",
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "sA",
       "number": "A–E",
       "title": "附录",
       "page": 38,
-      "short": "附录 A–E"
+      "short": "附录 A–E",
+      "directions": {
+        "harmonic": 35,
+        "elliptic": 25,
+        "quaternionic": 15,
+        "hyperbolic": 10,
+        "geometric": 10,
+        "probability": 5
+      }
     }
   ],
   "spine": [
@@ -233,7 +301,10 @@ const VP = {
         1,
         24,
         25
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "t12",
@@ -264,7 +335,11 @@ const VP = {
       "pages": [
         4,
         24
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      },
+      "directionNote": "直接调用命题 6.3 的环面估计。本证明用频率帽分解、非驻相核估计和空间局部化去掉周期性。"
     },
     {
       "id": "n21",
@@ -279,7 +354,10 @@ const VP = {
       ],
       "pages": [
         7
-      ]
+      ],
+      "directions": {
+        "hyperbolic": 100
+      }
     },
     {
       "id": "n22",
@@ -306,7 +384,13 @@ const VP = {
       "pages": [
         9,
         10
-      ]
+      ],
+      "directions": {
+        "hyperbolic": 55,
+        "quaternionic": 30,
+        "harmonic": 15
+      },
+      "directionNote": "用复时空坐标写守恒流，用单位四元数保持 Gram 矩阵，再把时间分量写成 Fourier 乘子输出。"
     },
     {
       "id": "n31",
@@ -323,7 +407,10 @@ const VP = {
       ],
       "pages": [
         11
-      ]
+      ],
+      "directions": {
+        "quaternionic": 100
+      }
     },
     {
       "id": "n32",
@@ -340,7 +427,10 @@ const VP = {
       ],
       "pages": [
         12
-      ]
+      ],
+      "directions": {
+        "quaternionic": 100
+      }
     },
     {
       "id": "n33",
@@ -357,7 +447,10 @@ const VP = {
       ],
       "pages": [
         13
-      ]
+      ],
+      "directions": {
+        "quaternionic": 100
+      }
     },
     {
       "id": "n41",
@@ -373,7 +466,10 @@ const VP = {
       "pages": [
         14,
         15
-      ]
+      ],
+      "directions": {
+        "quaternionic": 100
+      }
     },
     {
       "id": "dirichlet",
@@ -388,7 +484,12 @@ const VP = {
       ],
       "pages": [
         15
-      ]
+      ],
+      "directions": {
+        "quaternionic": 80,
+        "harmonic": 20
+      },
+      "directionNote": "用卷积平滑时间密度，用四元数余因子使密度严格为正，并检查秩一背景。存在性、边界屏障和参数依赖直接使用定理 A.1。"
     },
     {
       "id": "n42",
@@ -418,7 +519,12 @@ const VP = {
       "pages": [
         16,
         17
-      ]
+      ],
+      "directions": {
+        "quaternionic": 55,
+        "variational": 45
+      },
+      "directionNote": "沿势函数线段积分并作分部积分，构造抵消项。用四元数 Schur 补和余因子压缩公式分解行列式、处理边界项。"
     },
     {
       "id": "n43",
@@ -435,7 +541,11 @@ const VP = {
       ],
       "pages": [
         17
-      ]
+      ],
+      "directions": {
+        "quaternionic": 100
+      },
+      "directionNote": "给定能量公式后，用秩一行列式展开、余因子收缩公式和边界分部积分完成比较。"
     },
     {
       "id": "n51",
@@ -467,7 +577,13 @@ const VP = {
         19,
         20,
         21
-      ]
+      ],
+      "directions": {
+        "harmonic": 50,
+        "elliptic": 35,
+        "quaternionic": 15
+      },
+      "directionNote": "用 Fourier 乘子估计和反演控制波，用椭圆比较函数控制势深，并用四元数 Hessian 的矩阵估计验证屏障。"
     },
     {
       "id": "n61",
@@ -485,7 +601,10 @@ const VP = {
         21,
         22,
         23
-      ]
+      ],
+      "directions": {
+        "potential": 100
+      }
     },
     {
       "id": "n63",
@@ -501,8 +620,8 @@ const VP = {
       ],
       "steps": [
         {
-          "t": "两个圆",
-          "b": "两次径向调和比较，各花费一个对数。"
+          "t": "应用引理 6.1",
+          "b": "检查命题 5.1 给出的势满足引理 6.1 的假设，然后直接套用其圆周平均下界。"
         },
         {
           "t": "代入消去",
@@ -515,7 +634,11 @@ const VP = {
       ],
       "pages": [
         23
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      },
+      "directionNote": "直接调用命题 5.1 和引理 6.1，检查代入条件并组合估计。剩余频率范围用有限 Fourier 和处理。"
     },
     {
       "id": "c71",
@@ -531,7 +654,10 @@ const VP = {
       ],
       "pages": [
         25
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "p81",
@@ -547,7 +673,10 @@ const VP = {
       ],
       "pages": [
         26
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "p82",
@@ -564,7 +693,13 @@ const VP = {
         27,
         46,
         47
-      ]
+      ],
+      "directions": {
+        "geometric": 55,
+        "harmonic": 35,
+        "probability": 10
+      },
+      "directionNote": "完整证明位于附录 C。这里的颜色与附录 C 对应同一份证明。"
     },
     {
       "id": "n92",
@@ -579,7 +714,10 @@ const VP = {
       ],
       "pages": [
         28
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "c91",
@@ -599,7 +737,11 @@ const VP = {
         30,
         31,
         32
-      ]
+      ],
+      "directions": {
+        "geometric": 100
+      },
+      "directionNote": "直接调用引理 9.4 的管重叠估计，再用管族离散化、对偶和变尺度 Hausdorff 覆盖推出最大估计与维数结论。"
     },
     {
       "id": "c93",
@@ -615,7 +757,10 @@ const VP = {
       "pages": [
         28,
         29
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "t101",
@@ -631,7 +776,10 @@ const VP = {
       "pages": [
         32,
         33
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "t111",
@@ -650,7 +798,10 @@ const VP = {
         34,
         35,
         36
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "c121",
@@ -666,7 +817,10 @@ const VP = {
       "pages": [
         37,
         38
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "ta1",
@@ -686,7 +840,12 @@ const VP = {
         39,
         40,
         41
-      ]
+      ],
+      "directions": {
+        "elliptic": 85,
+        "quaternionic": 15
+      },
+      "directionNote": "用连续性方法、椭圆正则性和边界估计证明可解性，用四元数 Hessian 与余因子公式处理行列式。"
     },
     {
       "id": "tb1",
@@ -701,7 +860,10 @@ const VP = {
       ],
       "pages": [
         41
-      ]
+      ],
+      "directions": {
+        "harmonic": 100
+      }
     },
     {
       "id": "tc",
@@ -716,7 +878,13 @@ const VP = {
       ],
       "pages": [
         46
-      ]
+      ],
+      "directions": {
+        "geometric": 55,
+        "harmonic": 35,
+        "probability": 10
+      },
+      "directionNote": "先构造压缩的管簇，再用 Fourier 分析验证波包传播，用独立随机符号的二阶矩给出弱范数下界。"
     },
     {
       "id": "td",
@@ -733,7 +901,13 @@ const VP = {
       ],
       "pages": [
         48
-      ]
+      ],
+      "directions": {
+        "elliptic": 55,
+        "quaternionic": 30,
+        "harmonic": 15
+      },
+      "directionNote": "在圆盘上求解线性 Dirichlet 问题、构造比较函数，用四元数余因子写能量，并沿用 Fourier 核估计。圆环比较直接引用引理 6.1。"
     },
     {
       "id": "te1",
@@ -754,7 +928,14 @@ const VP = {
         52,
         53,
         54
-      ]
+      ],
+      "directions": {
+        "hyperbolic": 40,
+        "quaternionic": 25,
+        "harmonic": 20,
+        "elliptic": 15
+      },
+      "directionNote": "用对称系统的特征值和极化构造守恒流，在新坐标下计算四元数 Hessian，并实际验证乘子估计和椭圆屏障。"
     }
   ],
   "edges": [

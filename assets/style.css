@@ -25,16 +25,14 @@
   --accent-2: #2c6e68;
   --accent-2-tint: #dcece9;
 
-  --theorem: #7f3a13;
-  --theorem-tint: #f6e4d8;
-  --proposition: #2c6e68;
-  --proposition-tint: #dcece9;
-  --lemma: #566270;
-  --lemma-tint: #e7ebf0;
-  --corollary: #9a6a1f;
-  --corollary-tint: #f3e9d4;
-  --appendix: #7d6a4f;
-  --appendix-tint: #efe9dd;
+  --direction-harmonic: #153f7c; --direction-harmonic-tint: #e1eeff; --direction-harmonic-line: #386fb7;
+  --direction-hyperbolic: #0c514b; --direction-hyperbolic-tint: #def4ed; --direction-hyperbolic-line: #28796d;
+  --direction-quaternionic: #563183; --direction-quaternionic-tint: #efe4ff; --direction-quaternionic-line: #7952a9;
+  --direction-elliptic: #78360e; --direction-elliptic-tint: #ffead5; --direction-elliptic-line: #ac5a25;
+  --direction-variational: #38571d; --direction-variational-tint: #d7edc4; --direction-variational-line: #608238;
+  --direction-potential: #524903; --direction-potential-tint: #faf1b9; --direction-potential-line: #84751d;
+  --direction-probability: #273844; --direction-probability-tint: #dfe5e7; --direction-probability-line: #647780;
+  --direction-geometric: #831e4a; --direction-geometric-tint: #fce2ed; --direction-geometric-line: #b24a76;
 
   --edge: #9aa8b2;
   --edge-hi: #a6501c;
@@ -59,16 +57,15 @@
   --accent-tint: #3a2a1e;
   --accent-2: #6cbdb5;
   --accent-2-tint: #1c3230;
-  --theorem: #e69158;
-  --theorem-tint: #3a2a1e;
-  --proposition: #6cbdb5;
-  --proposition-tint: #1c3230;
-  --lemma: #98a6b4;
-  --lemma-tint: #28323c;
-  --corollary: #d2a85f;
-  --corollary-tint: #38301f;
-  --appendix: #c0ad8f;
-  --appendix-tint: #332e25;
+  --direction-harmonic: #b0d3ff; --direction-harmonic-tint: #192d49; --direction-harmonic-line: #6ca8eb;
+  --direction-hyperbolic: #99e0d1; --direction-hyperbolic-tint: #17352f; --direction-hyperbolic-line: #59b6a6;
+  --direction-quaternionic: #dcc0ff; --direction-quaternionic-tint: #322643; --direction-quaternionic-line: #b592de;
+  --direction-elliptic: #ffc7a0; --direction-elliptic-tint: #3d2a1e; --direction-elliptic-line: #e4955f;
+  --direction-variational: #cae7ad; --direction-variational-tint: #273722; --direction-variational-line: #a4c975;
+  --direction-potential: #f6e487; --direction-potential-tint: #36311a; --direction-potential-line: #c1ab4d;
+  --direction-probability: #c1d0d7; --direction-probability-tint: #343b41; --direction-probability-line: #9aadb6;
+  --direction-geometric: #ffb6d3; --direction-geometric-tint: #3d2331; --direction-geometric-line: #df7fa8;
+
   --edge: #3f4a51;
   --edge-hi: #e69158;
   --shadow: 0 12px 28px -14px rgba(0, 0, 0, 0.6);
@@ -216,13 +213,20 @@ body {
 .graph-legend__head[aria-expanded="false"] .graph-legend__chevron { transform: rotate(-45deg); }
 .graph-legend__body { padding: 4px 12px 12px; }
 .graph-legend__row { display: flex; gap: 14px; padding: 4px 0; font-size: 12.5px; color: var(--text-dim); }
-.legend-swatch { width: 14px; height: 14px; border-radius: 4px; display: inline-block; margin-right: 6px; vertical-align: middle; }
-.legend-swatch--theorem { background: var(--theorem); }
-.legend-swatch--proposition { background: var(--proposition); }
-.legend-swatch--lemma { background: var(--lemma); }
-.legend-swatch--corollary { background: var(--corollary); }
-.legend-swatch--appendix { background: var(--appendix); }
-.legend-swatch--section { background: var(--surface-3); border: 1px solid var(--border); }
+.legend-caption { margin: 1px 0 5px; font-size: 12px; color: var(--text-dim); }
+#legend-directions .graph-legend__row { gap: 8px; align-items: center; }
+.legend-swatch {
+  width: 14px; height: 14px; flex: 0 0 14px; border-radius: 4px;
+  background: var(--direction-tint); border: 2px solid var(--direction-line);
+}
+[data-direction="harmonic"] { --direction-color: var(--direction-harmonic); --direction-tint: var(--direction-harmonic-tint); --direction-line: var(--direction-harmonic-line); }
+[data-direction="hyperbolic"] { --direction-color: var(--direction-hyperbolic); --direction-tint: var(--direction-hyperbolic-tint); --direction-line: var(--direction-hyperbolic-line); }
+[data-direction="quaternionic"] { --direction-color: var(--direction-quaternionic); --direction-tint: var(--direction-quaternionic-tint); --direction-line: var(--direction-quaternionic-line); }
+[data-direction="elliptic"] { --direction-color: var(--direction-elliptic); --direction-tint: var(--direction-elliptic-tint); --direction-line: var(--direction-elliptic-line); }
+[data-direction="variational"] { --direction-color: var(--direction-variational); --direction-tint: var(--direction-variational-tint); --direction-line: var(--direction-variational-line); }
+[data-direction="potential"] { --direction-color: var(--direction-potential); --direction-tint: var(--direction-potential-tint); --direction-line: var(--direction-potential-line); }
+[data-direction="probability"] { --direction-color: var(--direction-probability); --direction-tint: var(--direction-probability-tint); --direction-line: var(--direction-probability-line); }
+[data-direction="geometric"] { --direction-color: var(--direction-geometric); --direction-tint: var(--direction-geometric-tint); --direction-line: var(--direction-geometric-line); }
 .legend-arrow {
   width: 16px; height: 0; border-top: 2px solid var(--edge); display: inline-block; margin-right: 6px; vertical-align: middle; position: relative;
 }
@@ -254,6 +258,9 @@ body {
 .welcome-btn--ghost { background: none; color: var(--accent); }
 
 .node-head { margin-bottom: 14px; }
+.direction-summary { display:flex; flex-direction:column; align-items:flex-start; gap:5px; margin:8px 0 14px; font-size:.84em; color:var(--text-dim); }
+.direction-shares { display:flex; flex-wrap:wrap; gap:6px; list-style:none; padding:0; margin:0; }
+.direction-share { color:var(--direction-color); background:var(--direction-tint); border:1px solid var(--direction-line); border-radius:6px; padding:2px 7px; }
 .node-head__eyebrow { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
 .node-head__title { font-family: var(--font-read); font-size: 1.55rem; line-height: 1.25; margin: 0; letter-spacing: -0.015em; }
 

@@ -105,7 +105,10 @@
     if (mode === "map") {
       for (const section of VP.sections) {
         if (section.id === "s1") continue;
-        elements.push({data:{id:section.id, type:"section", label:"§ " + section.number + "\n" + section.short}});
+        elements.push({data:{
+          id:section.id, type:"section", directions:section.directions,
+          label:"§ " + section.number + "\n" + section.short
+        }});
       }
     }
     for (const result of VP.results) {
@@ -118,7 +121,7 @@
       const title = result.title.length > 12 ? result.title.slice(0,11) + "…" : result.title;
       elements.push({data:{
         id:result.id, parent:inSection ? result.parent : undefined, type:"result",
-        kind:result.kind, label:result.number + "  " + title
+        directions:result.directions, label:result.number + "  " + title
       }});
       representative.set(result.id, result.id);
     }
@@ -134,17 +137,8 @@
     return elements;
   }
 
-  function kindColor(kind) {
-    return cssVar({
-      theorem: "--theorem", proposition: "--proposition", lemma: "--lemma",
-      corollary: "--corollary", appendix: "--appendix"
-    }[kind] || "--lemma");
-  }
-  function kindTint(kind) {
-    return cssVar({
-      theorem: "--theorem-tint", proposition: "--proposition-tint", lemma: "--lemma-tint",
-      corollary: "--corollary-tint", appendix: "--appendix-tint"
-    }[kind] || "--lemma-tint");
+  function directionColor(direction, suffix = "") {
+    return cssVar("--direction-" + direction + suffix);
   }
 
   const cy = cytoscape({
@@ -193,7 +187,7 @@
       {
         selector: "node.selected",
         style: {
-          "border-color": cssVar("--edge-hi"), "border-width": 3,
+          "border-width": 3,
           "background-blacken": 0
         }
       },
@@ -222,23 +216,42 @@
   let cursor = 0;
 
   function colorGraph() {
-    cy.nodes("node[type='section']").style({
-      "background-color": cssVar("--surface-2"),
-      "border-color": cssVar("--border"),
-      color: cssVar("--text-dim")
+    const textColor = cssVar("--text");
+    const palette = Object.fromEntries(Object.keys(VP.directions).map(direction => [
+      direction, {
+        ink: directionColor(direction),
+        tint: directionColor(direction, "-tint"),
+        line: directionColor(direction, "-line")
+      }
+    ]));
+    cy.nodes().forEach(node => {
+      const directions = Object.entries(node.data("directions"));
+      const primary = palette[directions[0][0]];
+      let position = 0;
+      const positions = directions.flatMap(([, share]) => {
+        const start = position;
+        position += share;
+        return [start + "%", position + "%"];
+      });
+      const colors = directions.flatMap(([key]) => [palette[key].tint, palette[key].tint]);
+      node.style({
+        "background-fill": directions.length === 1 ? "solid" : "linear-gradient",
+        "background-color": primary.tint,
+        "background-gradient-direction": "to-right",
+        "background-gradient-stop-colors": colors.join(" "),
+        "background-gradient-stop-positions": positions.join(" "),
+        "border-color": primary.line,
+        color: textColor,
+        "underlay-color": primary.ink,
+        "underlay-opacity": node.hasClass("selected") ? 0.15 : 0,
+        "underlay-padding": 5
+      });
     });
     const normalEdge = cssVar("--edge");
     const highlightedEdge = cssVar("--edge-hi");
     cy.edges().forEach(edge => {
       const color = edge.hasClass("hi") ? highlightedEdge : normalEdge;
       edge.style({ "line-color": color, "target-arrow-color": color });
-    });
-    cy.nodes("node[type='result']").forEach(node => {
-      const kind = node.data("kind");
-      node.style({
-        "background-color":kindTint(kind), color:kindColor(kind),
-        "border-color":node.hasClass("selected") ? cssVar("--edge-hi") : kindColor(kind)
-      });
     });
   }
 
@@ -417,8 +430,18 @@
   function renderSection(section) {
     const ids = VP.results.filter(result => result.parent === section.id).map(result => result.id);
     panelContent.innerHTML = '<article><div class="section-label">§ ' + esc(section.number) +
-      '</div><h2>' + esc(section.title) + '</h2><a href="' + pageLink(section.page) +
+      '</div><h2>' + esc(section.title) + '</h2>' + directionSummary(section) +
+      (section.note ? '<div class="prose"><p>' + esc(section.note) + '</p></div>' : '') +
+      '<a href="' + pageLink(section.page) +
       '">原文第 ' + section.page + ' 页</a>' + linkList("本节结果", ids) + '</article>';
+  }
+
+  function directionSummary(item) {
+    return '<div class="direction-summary"><span>证明方法 · 估计占比</span>' +
+      '<ul class="direction-shares">' + Object.entries(item.directions).map(([key, share]) =>
+        '<li class="direction-share" data-direction="' + esc(key) + '">' +
+        esc(VP.directions[key]) + ' <strong>' + share + '%</strong></li>').join("") + '</ul>' +
+      (item.directionNote ? '<span>' + esc(item.directionNote) + '</span>' : '') + '</div>';
   }
 
   function linkList(title, ids) {
@@ -443,6 +466,7 @@
         '<span class="badge">' + kindLabel(r.kind) + "</span>" +
         '<a class="badge src" href="#/' + r.parent + '">§ ' + esc(sectionById[r.parent].number) + '</a></div>' +
         '<h2 class="node-head__title"><span class="mono">' + esc(r.number) + "</span> " + esc(r.title) + "</h2></div>" +
+      directionSummary(r) +
       '<div class="section-label">陈述</div><div class="prose statement"></div>' +
       '<div class="section-label">证明思路</div><div class="prose idea"></div>' +
       ((r.steps && r.steps.length) ? '<div class="section-label">分步推导</div>' + stepsHtml : "") +
@@ -626,6 +650,11 @@
     setOutlineOpen(open);
     if (!open) requestAnimationFrame(fitGraph);
   };
+  const legendDirections = document.getElementById("legend-directions");
+  legendDirections.innerHTML = Object.entries(VP.directions).map(([key, label]) =>
+    '<div class="graph-legend__row" data-direction="' + esc(key) + '">' +
+    '<i class="legend-swatch" aria-hidden="true"></i>' + esc(label) + '</div>').join("");
+
   document.getElementById("legend-toggle").onclick = event => {
     const button = event.currentTarget;
     const open = button.getAttribute("aria-expanded") === "true";

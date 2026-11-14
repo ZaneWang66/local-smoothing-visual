@@ -86,18 +86,8 @@
         <i class="graph-legend__chevron" aria-hidden="true"></i>图例
       </button>
       <div class="graph-legend__body" id="legend-body" hidden>
-        <div class="graph-legend__row">
-          <span><i class="legend-swatch legend-swatch--theorem"></i>定理</span>
-          <span><i class="legend-swatch legend-swatch--proposition"></i>命题</span>
-        </div>
-        <div class="graph-legend__row">
-          <span><i class="legend-swatch legend-swatch--lemma"></i>引理</span>
-          <span><i class="legend-swatch legend-swatch--corollary"></i>推论</span>
-        </div>
-        <div class="graph-legend__row">
-          <span><i class="legend-swatch legend-swatch--appendix"></i>附录结果</span>
-          <span><i class="legend-swatch legend-swatch--section"></i>分区</span>
-        </div>
+        <p class="legend-caption">颜色表示当前证明直接用到的方法，面积为估计占比。只引用结论时，沿箭头查看该结果的证明。</p>
+        <div id="legend-directions"></div>
         <div class="graph-legend__row">
           <span class="graph-legend__key"><i class="legend-arrow"></i>A → B：A 被用于证明 B</span>
         </div>
